@@ -8,6 +8,27 @@ class CatchEntryWidget extends StatelessWidget {
   
   CatchEntryWidget({required this.entry});
 
+  // Parse UNIX time from sqlite db into datetime object
+  DateTime get dt => DateTime.fromMillisecondsSinceEpoch(entry.datetime);
+
+  // Used for grouping catches on the log screen
+  String get dateString => sprintf(
+    '%i-%s-%s', 
+    [dt.year, dt.month.toString().padLeft(2, '0'), dt.day.toString().padLeft(2, '0')]
+  );
+
+  // Make datetime string to display in widget
+  String get dateTimeString => sprintf(
+    '%i-%s-%s %i:%s', 
+    [
+      dt.year, 
+      dt.month.toString().padLeft(2, '0'), 
+      dt.day.toString().padLeft(2, '0'), 
+      dt.hour, 
+      dt.minute.toString().padLeft(2, '0')
+    ]
+  );
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +52,7 @@ class CatchEntryWidget extends StatelessWidget {
             textAlign: TextAlign.left,
           ),
           Text(
-            sprintf('Date: %s', [DateTime.fromMillisecondsSinceEpoch(entry.datetime)]), 
+            sprintf('Date: %s', [dateTimeString]), 
             textAlign: TextAlign.left,
           ),
         ],

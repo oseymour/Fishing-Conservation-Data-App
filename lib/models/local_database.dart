@@ -34,29 +34,24 @@ class LocalDatabase {
         length FLOAT NOT NULL,
         weight FLOAT NOT NULL,
         girth FLOAT,
-        datetime TEXT NOT NULL
+        datetime INT NOT NULL
       )
     ''');
   }
 
   Future close() async {
-    final db = await instance.database;
+    Database db = await instance.database;
     db.close();
   }
 
   Future<int> insertCatch(CatchEntry entry) async {
-    final db = await instance.database;
+    Database db = await instance.database;
     return await db.insert('Catches', entry.toMap());
   }
 
   Future<List<Map<String, dynamic>>> getCatchByUuid(String uuid) async {
     Database db = await instance.database;
     return await db.rawQuery('SELECT * FROM Catches WHERE uuid = ?', [uuid]);
-  }
-
-  Future<List<Map<String, dynamic>>> readAllCatches() async {
-    Database db = await instance.database;
-    return await db.rawQuery('SELECT * FROM Catches');
   }
 
   Future<int> updateCatch(CatchEntry entry) async {
